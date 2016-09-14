@@ -1,7 +1,14 @@
 <!DOCTYPE html>
-<html>
-	<head charset="UTF-8">
+<html> 
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap.css" />
+		<style>
+			.active{
+				font-size: 18
+			}
+		</style>
 		<script src="vue.js"></script>
 	</head>
 	<body>
@@ -42,6 +49,7 @@
 				</tbody>	
 			</table>
 		</div>
+		
 		<script type="text/javascript">
 			
 				var vm = new Vue({
@@ -63,6 +71,51 @@
 				});
 			
 		</script>
+		<div id="app4">
+			<ul class="pagination">
+				<!-- <li v-for="n in pageCount" >
+					<a href="javascript:void(0)" v-bind:class="activeNumber === n+1 ? 'active' : ''">{{n+1}}</a>
+				</li> -->
+				<li v-for="n in pageCount" >
+					<a href="javascript:void(0)" :class="activeNumber === n+1 ? 'active' : ''">{{n+1}}</a>
+				</li>
+			</ul>
+		</div>
+		
+		<script>
+			var vm = new Vue({
+				el : '#app4',
+				data : {
+					activeNumber : 1,
+					pageCount : 10
+				} 
+			});
+		</script>
+
+
+		<div id="app5">
+			<a href="javascript:void(0)" v-on:click="dosomething">v-on</a><br/>
+			<a href="javascript:void(0)" @click="dosomething2">v-on-sort</a>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el : '#app5',
+				data : {
+					message : 'msg'
+				},
+				methods : {
+					dosomething : function(){
+						alert(this.message);
+					},
+					dosomething2 : function(){
+						alert(this.message+'2');
+					}
+				}
+			});
+		</script>
+
+
+
 		<script>
 			/*var exampleData = {
 				message : "hello world"
