@@ -1,0 +1,148 @@
+<!html DOCTYPE>
+<html>
+	<head>
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap.css">
+		<script type="text/javascript" src="vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div class="container">
+				<div class="form-group">
+					<label>Search</label>
+					<input type="text" class="search-input" v-model="searchQuery" />
+				</div>
+			</div>
+			<div class="container">
+				<simple-grid :data-list="people" :columns="columns" :search-key="searchQuery">
+			</simple-grid>
+			</div>
+		</div>
+		<template id="grid-template">
+			<table>
+				<thead>
+				<tr>
+					<th v-for="col in columns">
+						{{col.name | capitalize}}
+					</th>
+					<th>
+						Delete
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(index,entry) in dataList | filterBy searchKey">
+						<td v-for="col in columns">
+							{{entry[col.name]}}
+						</td>
+						<td class="text-center">
+							<button @click="deleteItem(index)">delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="container">
+				<button class="btn" @click="openNewItemDialog('Create new item')">Create</button>
+			</div>
+			<modal-dialog :mode='mode' :title='title' :fields='columns' :item="item">
+			</modal-dialog>
+		</template>
+		<template id="dialog-template">
+			<div class="dialogs">
+				<div class="dialog" v-bind:class="{'dialog-active':show}">
+					<div class="dialog-content">
+						<header class="dialog-header">
+							<h1 class="dialog-title">aaaa{{title}}</h1>
+						</header>
+						<div v-for="field in fields" class="from-group">
+							<label>{{field.name}}</label>
+							<select v-if="field.dataSource" v-model="item[field.name]">
+								<option v-for="opt in field.dataSource" :value="opt">{{opt}}</option>
+							</select>
+							<input v-else type="text" v-model="item[field.name]"/>
+						</div>
+						<footer class="dialog-footer">
+							<div class="form-group">
+								<label></label>
+								<button v-on:click="save">save</button>
+								<button v-on:click="close">close</button>
+							</div>
+						</footer>
+					</div>
+				</div>
+				<div class='dialog-overlay'></div>
+			</div>
+		</template>
+		<script type="text/javascript">
+			Vue.component('simple-grid',{
+				template : '#grid-template',
+				props : ['dataList','columns','searchKey'],
+				methods : {
+					openNewItemDialog : function(title){
+						this.title = title;
+						this.mode = 1;
+						this.item = {};
+						this.$broadcast('showDialog',true);
+					},
+					createItem : function(){
+						this.dataList.push(this.item);
+						this.$broadcast('showDialog',false);
+						this.item = {};
+					},
+					deleteItem : function(index){
+						this.dataList.splice(index,1);
+					}
+				},
+				data : function(){
+					return {
+						mode : 0,
+						item : {},
+						title : ''
+					}
+				},
+				components : {
+					'modal-dialog' : {
+						template : '#dialog-template',
+						data : function(){
+							return {
+								show : false
+							}
+						},
+						props : ['mode','title','fields','item'],
+						methods : {
+							close : function(){
+								this.show = false
+							},
+							save : function(){
+								if(this.mode === 1){
+									this.$dispatch('create-item');
+								}
+							}
+						},
+						events : {
+							'showDialog' : function(show){
+								this.show = show
+							}
+						}
+					}
+				}
+			});
+			var demo = new Vue({
+				el : '#app',
+				data : {
+					searchQuery : '',
+					columns : [{
+						name : 'name',
+						isKey : true
+					},{
+						name : 'age'
+					},{
+						name : 'sex',
+						dataSource : ['Male','Female']
+					}]
+				}
+
+			})
+		</script>
+	</body>
+</html?
