@@ -1,0 +1,219 @@
+<!html DOCTTYPE>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>component</title>
+		<script type="text/javascript" src="vue.js"></script>
+		<style type="text/css">
+			template{
+				display: none
+			}
+		</style>
+	</head>
+	<body>
+		<!--
+		<div id="app">
+			<my-component><my-component>
+		</div>
+		<template id="myTemplate">
+			<h1>{{msg}}</h1>
+			<button v-on:click="showmsg">showmessage button</button>
+		</template>
+		<script>
+			new Vue({
+				el : '#app',
+				data : {
+					display : true
+				},
+				components : {
+					'my-component' : {
+						template : '#myTemplate',
+						data : function(){
+							return {msg : 'message',display:false}
+						},
+						methods : {
+							showmsg : function(){
+								alert(this.msg);
+							}
+						}
+					}
+				}
+			});
+		</script>
+		<div id="app2">
+			<my-component2>this is compent</my-component2>
+			<my-component2>
+				
+			</my-component2>
+		</div>
+		<template id="myTemplate2">
+			<div>
+					this is a componnet
+					<slot>分发内容</slot>
+				</div>
+			<br/></template>
+		<script>
+			new Vue({
+				el : '#app2',
+				components : {
+					'my-component2' : {
+						template : '#myTemplate2'
+					}
+				}
+			});
+			/*
+			Vue.component('my-component2', {
+		        template: '#myComponent2'
+		    })
+
+		    new Vue({
+		        el: '#app2'
+		    })
+			*/
+		</script>
+
+		<div id="app3">
+			<my-component3></my-component>
+		</div>
+		<template id="dialog-template">
+			<div class="dialogs">
+					<div class="dialog" v-bind:class="{ 'dialog-active': show }">
+	            <div class="dialog-content">
+	                <div class="close rotate">
+	                    <span class="iconfont icon-close" @click="close"></span>
+	                </div>
+	                <slot name="header"></slot>
+	                <slot name="body"></slot>
+	                <slot name="footer"></slot>
+	            </div>
+	        </div>
+	        <div class="dialog-overlay"></div>
+
+			</div>
+		</template>
+		<script>
+			Vue.component('my-component3',{
+				template : "#dialog-template",
+				methods : {
+					close : function(){
+						alert('aaa');
+					}
+				}
+			});
+			new Vue({
+				el : '#app3'
+			});
+		</script>
+		-->
+		<!--
+		<div id="app4">
+			<parent-component></parent-component>
+		</div>
+		<template id="parentComponent">
+			this is parent component <br>
+			<child-component1 v-ref:cc1></child-component1>
+			<child-component2 v-ref:cc2></child-component2>
+			<button v-on:click="showChildData">showChildData</button>
+		</template>
+		<template id="childComponent1">aaa</template>	
+		<template id="childComponent2">bbb</template>
+		<script>
+		
+			Vue.component('parent-component',{
+				template : '#parentComponent',
+				components : {
+					'child-component1' : {
+						template : '#childComponent1',
+						data : function(){
+							return {
+								msg : 'child1'
+							}
+						}
+					},
+					'child-component2': {
+						template : '#childComponent2',
+						data : function(){
+							return {
+								msg : 'child2'
+							}
+						}
+					}
+				},
+				methods : {
+					showChildData : function(){
+						//for(var i=0;i<this.$children.length;i++){
+						//	alert(this.$children[i].msg)
+						//}
+						alert(this.$refs.cc1.msg);
+						alert(this.$refs.cc2.msg);
+					}
+				}
+			});
+			
+			/*
+			Vue.component('parent-component', {
+		        template: '#parentComponent',
+		        components: {
+		            'child-component1': {
+		                template: '#childComponent1',
+		                data: function() {
+		                    return {
+		                        msg: 'child component 111111'
+		                    }
+		                }
+		            },
+		            'child-component2': {
+		                template: '#childComponent2',
+		                data: function() {
+		                    return {
+		                        msg: 'child component 222222'
+		                    }
+		                }
+		            }
+		        },
+		        methods: {
+		            showChildData: function() {
+		                for (var i = 0; i < this.$children.length; i++) {
+		                    alert(this.$children[i].msg)
+		                }
+		            }
+		        }
+		    });*/
+
+			new Vue({
+				el : '#app4'
+			});
+		</script>
+	-->
+		<div id="app5">
+			<parent-component5></parent-component5>
+		</div>
+		<template id="parentTemplate5">
+			this is parent template
+			<child-component5></child-component5>
+		</template>
+		<template id="childTemplate5">
+			this is child template<br>
+			<button v-on:click='showParentData'>显示父组件信息</button>
+		</template>
+		<script type="text/javascript">
+			Vue.component('parent-component5',{
+				template : '#parentTemplate5',
+				data : function(){
+					return {msg : 'parent msg'}
+				},
+				components : {
+					'child-component5' : {
+						template : '#childTemplate5',
+						methods : {
+							showParentData : function(){
+								alert(this.$parent.msg);
+							}
+						}
+					}
+				}
+			});
+			new Vue({el : '#app5'});
+		</script>
+	</body>
+</html>

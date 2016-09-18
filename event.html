@@ -1,0 +1,87 @@
+<!html DOCTYPE>
+<html>
+	<head>
+		<title></title>
+		<meta charset='utf-8'>
+		<script type="text/javascript" src="vue.js"></script>
+	</head>
+	<body>
+		<!--
+		<div id="app">
+			<p>Message: {{messages | json}}</p>
+			<child-component></child-component>
+		</div>
+		<template id="childTemplate">
+			<input v-model="msg"/>
+			<button v-on:click="notify">Dispatch Event</button>
+		</template>
+		<script type="text/javascript">
+			Vue.component('child-component',{
+				template : '#childTemplate',
+				data : function(){
+					return {msg : ''}
+				},
+				methods : {
+					notify : function(){
+						if(this.msg.trim()){
+							this.$dispatch('child-msg',this.msg);
+							this.msg = '';
+						}
+					}
+				}
+			});
+			new Vue({
+				el : '#app',
+				data : {
+					messages : []
+				},
+				events : {
+					'child-msg' : function(msg){
+						this.messages.push(msg);
+					}
+				}
+			})
+		</script>
+	-->
+		<div id="app2">
+			<input v-model="msg" />
+			<button v-on:click='notify'>Broadcast</button>
+			<child-component2></child-component2>
+
+		</div>
+		<template id="childTemplate2">
+			<ul>
+				<li v-for="item in messages">
+					父组件消息{{item}}
+				</li>
+			</ul>
+		</template>
+		<script>
+			Vue.component('child-component2',{
+				template : '#childTemplate2',
+				data : function(){
+					return {messages : []}
+				},
+				events : {
+					'parent-msg' : function(msg){
+						this.messages.push(msg);
+					}
+				}
+			});
+			new Vue({
+				el : '#app2',
+				data : {
+					msg : ''
+				},
+				methods : {
+					notify : function(){
+						if(this.msg.trim()){
+							this.$broadcast('parent-msg',this.msg);
+						}
+					}
+				}
+			})
+		</script>
+
+	</body>
+</html>
